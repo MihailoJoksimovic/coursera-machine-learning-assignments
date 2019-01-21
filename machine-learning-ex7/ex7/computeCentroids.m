@@ -26,6 +26,27 @@ centroids = zeros(K, n);
 % Note: You can use a for-loop over the centroids to compute this.
 %
 
+% Iterate over centroids
+for k = 1:K
+	% Collect all samples belonging to this centroid
+		
+	samples = [];
+	
+	for i = 1:m
+		if (idx(i) == k)
+			samples = [ samples ; X(i, :) ];
+		endif
+	endfor
+
+	
+	
+	centroids(k, :) = ( 1 / size(samples, 1)) .* sum(samples);
+	
+	% Recalculated centroids
+	
+	
+endfor
+
 
 
 
