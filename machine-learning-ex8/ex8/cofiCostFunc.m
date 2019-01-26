@@ -40,9 +40,40 @@ Theta_grad = zeros(size(Theta));
 %                     partial derivatives w.r.t. to each element of Theta
 %
 
+% fprintf("Num users: %d, Num movies: %d, Num features: %d\n", num_users, num_movies, num_features);
 
+% fprintf("Num users in theta: %d, and num users in Y: %d\n", size(Theta, 1), size(Y, 2));
 
+sum = 0;
 
+for i = 1:size(X, 1) % Iterate through movies
+	movie_idx		= i;
+	
+	movie_features	= X(i, :);
+	
+	for j = 1:size(Theta, 1) % Iterate through users
+		user_idx	= j;
+		
+		% Check if user has rated this movie?
+		if (R(movie_idx, user_idx) != 1)
+			continue;
+		endif
+		
+		% Ok so, it seems that user has actually rated this movie. Let's see how did he rate it?
+		
+		users_rating_of_this_movie = Y(movie_idx, user_idx);
+		
+		% What would be the predicted rating for this movie?
+		
+		predicted_rating_of_this_movie	= Theta(user_idx, :) * X(i, :)';
+		
+		% fprintf("User #%d has rated movie #%d with rating: %f; predicted rating is: %f\n", user_idx, movie_idx, users_rating_of_this_movie, predicted_rating_of_this_movie);
+		
+		sum += (predicted_rating_of_this_movie - users_rating_of_this_movie) ^ 2;
+	endfor	
+endfor
+
+J = (1 / 2) * sum;
 
 
 
