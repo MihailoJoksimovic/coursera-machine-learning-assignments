@@ -21,7 +21,33 @@ sigma2 = zeros(n, 1);
 %               should contain variance of the i-th feature.
 %
 
+% Compute mean for each feature
 
+for i = 1:n % For each feature
+	mu_sum	= 0;
+	
+	for j = 1:m % For each sample
+		feature_val = X(j, i);
+		
+		mu_sum		+= feature_val;
+	endfor
+	
+	mu_sum			= (1 / m) * mu_sum;
+	
+	mu(i)			= mu_sum;
+endfor
+
+% Compute variance
+
+for i = 1:n % For each feature
+	variance_sum = 0;
+	
+	for j = 1:m % For each sample
+		variance_sum += (X(j, i) - mu(i)) ^ 2;
+	endfor
+	
+	sigma2(i) = (1 / m) * variance_sum;
+endfor
 
 
 
