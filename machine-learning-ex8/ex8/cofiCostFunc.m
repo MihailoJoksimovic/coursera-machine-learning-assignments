@@ -100,34 +100,13 @@ for i = 1:size(X, 1) % For each movie
 		
 		
 		for k = 1:K % For each feature
-			X_grad(i, k) += (Y_predicted(i, j) - Y(i, j)) * Theta(j, k);
+			X_grad(i, k) 		+= (Y_predicted(i, j) - Y(i, j)) * Theta(j, k);
+			
+			Theta_grad(j, k) 	+= (Y_predicted(i, j) - Y(i, j)) * X(i, k);
 		endfor
 		
 	endfor
 endfor
-
-
-% Calculate gradients for each theta param
-
-for i = 1:size(X, 1) % For each movie
-	
-	for j = 1:size(Theta, 1) % For each user
-		
-		if (R(i, j) != 1) 
-			continue;
-		endif;
-		
-		
-		for k = 1:K % For each feature
-			Theta_grad(j, k) += (Y_predicted(i, j) - Y(i, j)) * X(i, k);
-		endfor
-		
-	endfor
-endfor
-
-
-
-
 
 
 
