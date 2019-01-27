@@ -98,16 +98,31 @@ for i = 1:size(X, 1) % For each movie
 			continue;
 		endif;
 		
+		% X_grad(i, :) = (Y_predicted(i, :) - Y(i, :)) .* Theta(j, :);
 		
-		for k = 1:K % For each feature
-			X_grad(i, k) 		+= (Y_predicted(i, j) - Y(i, j)) * Theta(j, k);
-			
-			Theta_grad(j, k) 	+= (Y_predicted(i, j) - Y(i, j)) * X(i, k);
-		endfor
+		
+		% for k = 1:K % For each feature
+		% 	X_grad(i, k) 		+= (Y_predicted(i, j) - Y(i, j)) * Theta(j, k);
+		%
+		% 	Theta_grad(j, k) 	+= (Y_predicted(i, j) - Y(i, j)) * X(i, k);
+		% endfor
 		
 	endfor
 endfor
 
+
+for i = 1:size(X, 1) % For each movie
+	idx = find(R(i, :) == 1);
+	
+	idx
+	
+	Theta_temp 	= Theta(idx, :);
+	Y_temp		= Y(i, idx);
+	
+	X_grad(i, :) 		= ((X(i, :) * Theta_temp' - Y_temp) * Theta_temp)';
+endfor
+
+% TODO: Figure out how to do the same for Theta_grad
 
 
 % =============================================================
