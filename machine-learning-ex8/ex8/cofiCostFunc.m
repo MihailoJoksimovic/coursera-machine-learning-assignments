@@ -90,31 +90,30 @@ K			= size(X, 2);
 
 % Calculate gradients for each movie
 
-for i = 1:size(X, 1) % For each movie
-	
-	for j = 1:size(Theta, 1) % For each user
-		
-		if (R(i, j) != 1) 
-			continue;
-		endif;
-		
-		% X_grad(i, :) = (Y_predicted(i, :) - Y(i, :)) .* Theta(j, :);
-		
-		
-		% for k = 1:K % For each feature
-		% 	X_grad(i, k) 		+= (Y_predicted(i, j) - Y(i, j)) * Theta(j, k);
-		%
-		% 	Theta_grad(j, k) 	+= (Y_predicted(i, j) - Y(i, j)) * X(i, k);
-		% endfor
-		
-	endfor
-endfor
+% for i = 1:size(X, 1) % For each movie
+%
+% 	for j = 1:size(Theta, 1) % For each user
+%
+% 		if (R(i, j) != 1)
+% 			continue;
+% 		endif;
+%
+% 		% X_grad(i, :) = (Y_predicted(i, :) - Y(i, :)) .* Theta(j, :);
+%
+%
+% 		% for k = 1:K % For each feature
+% 		% 	X_grad(i, k) 		+= (Y_predicted(i, j) - Y(i, j)) * Theta(j, k);
+% 		%
+% 		% 	Theta_grad(j, k) 	+= (Y_predicted(i, j) - Y(i, j)) * X(i, k);
+% 		% endfor
+%
+% 	endfor
+% endfor
 
 
 for i = 1:size(X, 1) % For each movie
 	idx = find(R(i, :) == 1);
 	
-	idx
 	
 	Theta_temp 	= Theta(idx, :);
 	Y_temp		= Y(i, idx);
@@ -122,8 +121,36 @@ for i = 1:size(X, 1) % For each movie
 	X_grad(i, :) 		= ((X(i, :) * Theta_temp' - Y_temp) * Theta_temp)';
 endfor
 
-% TODO: Figure out how to do the same for Theta_grad
+for j = 1:size(Theta, 1) % For each user
+	
+	idx					= find(R(:, j) == 1); % Find only movies that user has rated
+	
+	X_temp				= X(idx, :); 			% Only rated movies
+	Y_predicted_temp	= Y_predicted(idx, j); 	% Predictions for rated movies only
+	Y_temp				= Y(idx, j); 			% Ratings for rated movies only 
+	
+	Theta_grad(j, :)	= (Y_predicted_temp - Y_temp)' * X_temp;
+	
+	% break;
 
+	
+	% Theta_grad(j, :)	= ((Y_predicted_temp - Y_temp))';
+	
+	% Theta_grad(j, :)	= (Y_predicted_temp - Y_temp)';
+		
+	% for i = 1:size(X_temp, 1) % For each movie that this user has rated
+	% 	% if (R(i, j) != 1)
+	% 	% 	continue;
+	% 	% endif;
+	%
+	% 	Theta_grad(j, :) 	+= (Y_predicted(i, j) - Y(i, j)) .* X_temp(i, :);
+	%
+	% 	% for k = 1:K % For each feature
+	% 	% 	Theta_grad(j, k) += (Y_predicted(i, j) - Y(i, j)) * X(i, k);
+	% 	% endfor
+	%
+	% endfor
+endfor
 
 % =============================================================
 
